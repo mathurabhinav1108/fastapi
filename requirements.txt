@@ -1,0 +1,6 @@
+uvicorn[standard]  # Install the standard dependencies for uvicorn
+fastapi
+pydantic
+jwt
+passlib
+sqlite3 
