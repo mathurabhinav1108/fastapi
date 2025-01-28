@@ -1,6 +1,11 @@
-uvicorn[standard]  # Install the standard dependencies for uvicorn
 fastapi
+uvicorn
+pandas
 pydantic
-jwt
+passlib[bcrypt]
+pyjwt
+filelock
+sqlite3-binary
+pyjwt
+pandas
 passlib
-sqlite3 
