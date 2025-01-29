@@ -5,7 +5,6 @@ pydantic
 passlib[bcrypt]
 pyjwt
 filelock
-sqlite3-binary
 pyjwt
 pandas
 passlib
