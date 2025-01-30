@@ -1,3 +1,4 @@
+from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime, timedelta
 import jwt
 import random
@@ -27,9 +28,18 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # OAuth2 scheme
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
+oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="/login", auto_error=False)
 
 # FastAPI app
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Wildcard allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # CSV File Path
 CSV_FILE_PATH = "public/backend_table.csv"
@@ -416,6 +426,28 @@ def restore_backup(token: str = Depends(oauth2_scheme)):
         print(f"Error occurred while restoring backup: {e}")
         raise HTTPException(status_code=500, detail=f"Error restoring backup: {str(e)}")
 
+
+# Add this route with the others
+@app.get("/check-token")
+async def check_token(token: str = Depends(oauth2_scheme_optional)):
+    """
+    Verify JWT token validity
+    Returns:
+        - status: true + valid message if token is good
+        - status: false + error message if token is invalid/missing
+    """
+    if not token:
+        return {"status": False, "message": "Token missing"}
+    
+    try:
+        payload = decode_jwt(token)
+        return {"status": True, "message": "Token is valid"}
+    except HTTPException as e:
+        return {"status": False, "message": str(e.detail)}
+    except Exception as e:
+        return {"status": False, "message": f"Token verification failed: {str(e)}"}
+
+        
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the backend!"}
