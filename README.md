@@ -19,7 +19,7 @@ Make sure you have the following installed:
 ### Installation
 1. Clone this repository to your local machine:
     ```bash
-    git clone [https://github.com/yourusername/projectname.git](https://github.com/mathurabhinav1108/fastapi.git)
+    git clone https://github.com/mathurabhinav1108/fastapi.git
     ```
 
 2. Navigate into the project directory:
